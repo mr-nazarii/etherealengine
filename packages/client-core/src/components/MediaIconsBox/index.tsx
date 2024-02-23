@@ -31,11 +31,6 @@ import {
   useMediaNetwork
 } from '@etherealengine/client-core/src/common/services/MediaInstanceConnectionService'
 import { LocationState } from '@etherealengine/client-core/src/social/services/LocationService'
-import {
-  toggleMicrophonePaused,
-  toggleScreenshare,
-  toggleWebcamPaused
-} from '@etherealengine/client-core/src/transports/SocketWebRTCClientFunctions'
 import logger from '@etherealengine/common/src/logger'
 import { AudioEffectPlayer } from '@etherealengine/engine/src/audio/systems/MediaSystem'
 import { dispatchAction, getMutableState, useHookstate } from '@etherealengine/hyperflux'
@@ -56,7 +51,7 @@ import IconButtonWithTooltip from '@etherealengine/ui/src/primitives/mui/IconBut
 import { useTranslation } from 'react-i18next'
 import { VrIcon } from '../../common/components/Icons/VrIcon'
 import { RecordingUIState } from '../../systems/ui/RecordingsWidgetUI'
-import { MediaStreamService, MediaStreamState } from '../../transports/MediaStreams'
+import { MediaStreamState } from '../../transports/MediaStreams'
 import { useShelfStyles } from '../Shelves/useShelfStyles'
 import styles from './index.module.scss'
 
@@ -130,6 +125,11 @@ export const MediaIconsBox = () => {
     )!
     dispatchAction(WidgetAppActions.showWidget({ id: recordingWidget[0], shown: true }))
   }
+  let score = localStorage.getItem('score')
+
+  useEffect(() => {
+    score = localStorage.getItem('score')
+  }, [score])
 
   const xrSessionActive = xrState.sessionActive.value
   const handleExitSpectatorClick = () => dispatchAction(CameraActions.exitSpectate({}))
@@ -152,7 +152,7 @@ export const MediaIconsBox = () => {
           </div>
         </div>
       )}
-      {audioEnabled && hasAudioDevice.value && mediaNetworkReady && mediaNetworkState?.ready.value ? (
+      {/* {audioEnabled && hasAudioDevice.value && mediaNetworkReady && mediaNetworkState?.ready.value ? (
         <IconButtonWithTooltip
           id="UserAudio"
           title={t('user:menu.toggleMute')}
@@ -162,10 +162,10 @@ export const MediaIconsBox = () => {
           onPointerEnter={() => AudioEffectPlayer.instance.play(AudioEffectPlayer.SOUNDS.ui)}
           icon={<Icon type={isCamAudioEnabled ? 'Mic' : 'MicOff'} />}
         />
-      ) : null}
+      ) : null} */}
       {videoEnabled && hasVideoDevice.value && mediaNetworkReady && mediaNetworkState?.ready.value ? (
         <>
-          <IconButtonWithTooltip
+          {/* <IconButtonWithTooltip
             id="UserVideo"
             title={t('user:menu.toggleVideo')}
             className={styles.iconContainer + ' ' + (isCamVideoEnabled ? styles.on : '')}
@@ -184,7 +184,7 @@ export const MediaIconsBox = () => {
               onPointerEnter={() => AudioEffectPlayer.instance.play(AudioEffectPlayer.SOUNDS.ui)}
               icon={<Icon type={'FlipCameraAndroid'} />}
             />
-          )}
+          )} */}
           <IconButtonWithTooltip
             id="UserPoseTracking"
             title={t('user:menu.poseTracking')}
@@ -194,7 +194,8 @@ export const MediaIconsBox = () => {
             onPointerEnter={() => AudioEffectPlayer.instance.play(AudioEffectPlayer.SOUNDS.ui)}
             icon={<Icon type={'Accessibility'} />}
           />
-          <IconButtonWithTooltip
+          <p>{score}</p>
+          {/* <IconButtonWithTooltip
             id="UserScreenSharing"
             title={t('user:menu.shareScreen')}
             className={styles.iconContainer + ' ' + (isScreenVideoEnabled ? styles.on : '')}
@@ -202,7 +203,7 @@ export const MediaIconsBox = () => {
             onPointerUp={() => AudioEffectPlayer.instance.play(AudioEffectPlayer.SOUNDS.ui)}
             onPointerEnter={() => AudioEffectPlayer.instance.play(AudioEffectPlayer.SOUNDS.ui)}
             icon={<Icon type="ScreenShare" />}
-          />
+          /> */}
         </>
       ) : null}
       {supportsVR && (
